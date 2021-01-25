@@ -117,11 +117,15 @@ namespace aspect
               // may not strictly be true always but is likely a good enough
               // approximation here.
               const double gravity = gravity_direction * this->get_gravity_model().gravity_vector(in.position[0]).norm();
-
+              //added Jan2021 by Elodie
+              const double z = double(i)/double(n_points-1)*this->get_geometry_model().maximal_depth();
+              
               pressures[i] = pressures[i-1] + density * gravity * delta_z;
               temperatures[i] = (this->include_adiabatic_heating())
                                 ?
-                                temperatures[i-1] * (1 + alpha * gravity * delta_z * one_over_cp)
+                                //temperatures[i-1] * (1 + alpha * gravity * delta_z * one_over_cp)
+                                temperatures[i-1] * (1 + (3.8e-5*exp((-4.6e-4)*(z/1000))) * gravity * delta_z * one_over_cp)
+
                                 :
                                 temperatures[0];
             }
