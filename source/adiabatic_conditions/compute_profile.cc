@@ -120,14 +120,14 @@ namespace aspect
               
               //Jan2021 Elodie
               const double z = double(i)/double(n_points-1)*this->get_geometry_model().maximal_depth();
-              alpha[i] = 3.8e-5*std::exp(-0.00046*(z/1000));
+              alpha = 3.8e-5*std::exp(-0.00046*(z/1000));
 
               pressures[i] = pressures[i-1] + density * gravity * delta_z;
               temperatures[i] = (this->include_adiabatic_heating())
                                 ?
                                 //Jan2021 Elodie
                                 //temperatures[i-1] * (1 + alpha * gravity * delta_z * one_over_cp)
-                                temperatures[i-1] * (1 + alpha[i] * gravity * delta_z * one_over_cp)
+                                temperatures[i-1] * (1 + alpha * gravity * delta_z * one_over_cp)
                                 :
                                 temperatures[0];
             }
