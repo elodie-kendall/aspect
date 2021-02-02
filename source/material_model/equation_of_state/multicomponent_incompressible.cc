@@ -37,7 +37,9 @@ namespace aspect
                const unsigned int input_index,
                MaterialModel::EquationOfStateOutputs<dim> &out) const
       {
-
+        //Jan2021 Elodie
+        const double depth = this->get_geometry_model().depth(in.position[input_index]);
+        const double alpha = 3.8e-5*std::exp(-0.00046*(depth/1000));
 
         // If adiabatic heating is used, the reference temperature used to calculate density should be the adiabatic
         // temperature at the current position. This definition is consistent with the Extended Boussinesq Approximation.
@@ -49,8 +51,12 @@ namespace aspect
 
         for (unsigned int c=0; c < out.densities.size(); ++c)
           {
-            out.densities[c] = densities[c] * (1 - thermal_expansivities[c] * (in.temperature[input_index] - reference_temperature));
-            out.thermal_expansion_coefficients[c] = thermal_expansivities[c];
+            //out.densities[c] = densities[c] * (1 - thermal_expansivities[c] * (in.temperature[input_index] - reference_temperature));
+            //Jan2021 Elodie
+            out.densities[c] = densities[c] * (1 - alpha * (in.temperature[input_index] - reference_temperature));
+            //out.thermal_expansion_coefficients[c] = thermal_expansivities[c];
+            out.thermal_expansion_coefficients[c] = alpha;
+
             out.specific_heat_capacities[c] = specific_heats[c];
             out.compressibilities[c] = 0.0;
             out.entropy_derivative_pressure[c] = 0.0;
