@@ -91,6 +91,13 @@ namespace aspect
         // A: prefactor,
         // d: grain size, m: grain size exponent, E: activation energy, P: pressure,
         // V; activation volume, R: gas constant, T: temperature.
+       
+       //Jan2021 Elodie
+        if (temperature < 273) 
+        {
+           std::cout << "temperature is low" << temperature ;
+        }
+        
         const double viscosity_diffusion = 0.5 / p.prefactor *
                                            std::exp((p.activation_energy +
                                                      pressure*p.activation_volume)/
