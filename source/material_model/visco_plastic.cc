@@ -155,6 +155,10 @@ namespace aspect
 
           // The phase index is set to invalid_unsigned_int, because it is only used internally
           // in phase_average_equation_of_state_outputs to loop over all existing phases
+         
+          //Jan2021 Elodie
+          std::cout << "T is" << in.temperature[i] ;
+         
           MaterialUtilities::PhaseFunctionInputs<dim> phase_inputs(in.temperature[i],
                                                                    in.pressure[i],
                                                                    this->get_geometry_model().depth(in.position[i]),
