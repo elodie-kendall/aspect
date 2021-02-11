@@ -131,6 +131,11 @@ namespace aspect
           const Tensor <1,dim> g = this->get_gravity_model().gravity_vector(representative_point);
 
           in.position[0] = representative_point;
+
+          //Jan 2021 Elodie
+          if (temperatures[i] < 273)
+            temperatures[i] = 273;
+
           in.temperature[0] = temperatures[i];
           in.pressure[0] = pressures[i];
 
