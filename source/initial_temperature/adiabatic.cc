@@ -211,7 +211,8 @@ namespace aspect
         }
       
       //Jan2021 Elodie
-      const double amplitude_new = -amplitude/2 + ( std::rand() % ( amplitude/2 - -amplitude/2 + 1 ) )
+      int range = amplitude/2 - amplitude/2 + 1;
+      int amplitude_new = rand() % range + amplitude/2;
 
       const double perturbation = (mid_point.distance(position) < radius) ? amplitude_new
                                   : 0.0;
