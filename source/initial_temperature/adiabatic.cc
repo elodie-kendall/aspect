@@ -209,10 +209,13 @@ namespace aspect
                          ExcMessage ("Not a valid geometry model for the initial temperature model"
                                      "adiabatic."));
         }
+      
+      //Jan2021 Elodie
+      const double amplitude_new = -amplitude/2 + ( std::rand() % ( amplitude/2 - -amplitude/2 + 1 ) )
 
-      const double perturbation = (mid_point.distance(position) < radius) ? amplitude
+      const double perturbation = (mid_point.distance(position) < radius) ? amplitude_new
                                   : 0.0;
-
+ 
 
       // add the subadiabaticity
       const double zero_depth = 0.174;
