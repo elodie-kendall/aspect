@@ -209,8 +209,10 @@ namespace aspect
                          ExcMessage ("Not a valid geometry model for the initial temperature model"
                                      "adiabatic."));
         }
-
-      const double perturbation = (mid_point.distance(position) < radius) ? amplitude
+      
+      //Feb2021 Elodie
+      int amplitude_new = (rand() % amplitude +1) - amplitude/2
+      const double perturbation = (mid_point.distance(position) < radius) ? amplitude_new
                                   : 0.0;
 
 
