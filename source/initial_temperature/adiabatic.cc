@@ -28,6 +28,8 @@
 #include <aspect/geometry_model/chunk.h>
 
 #include <cmath>
+//Feb2021 Elodie
+#include <random>
 
 namespace aspect
 {
@@ -211,10 +213,14 @@ namespace aspect
         }
       
       //Feb2021 Elodie
-      int range = amplitude/2 + amplitude/2 + 1;
-      int amplitude_new = (rand() % range ) - amplitude/2;
+      std::random_device rd; // obtain a random number from hardware
+      std::mt19937 gen(rd()); 
+      std::uniform_int_distribution<> distr(-amplitude/2, amplitude/2); // define the range      
+      int amplitude_new=distr(gen);
       const double perturbation = (mid_point.distance(position) < radius) ? amplitude_new
                                   : 0.0;
+      //const double perturbation = (mid_point.distance(position) < radius) ? amplitude
+      //                            : 0.0;
 
 
       // add the subadiabaticity
