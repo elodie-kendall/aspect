@@ -232,10 +232,10 @@ namespace aspect
 
              //Jan2021 Elodie
              const double depth = this->get_geometry_model().depth(in.position[i]);
-             if (in.temperature[i] < 273)
-                  {
-                     std::cout << "depth/T/nu is" << depth << in.temperature[i] << out.viscosities[i] << std::endl;
-                  }
+             //if (in.temperature[i] < 273)
+             //     {
+             std::cout << "depth is" << depth << i "temp is" << in.temperature[i] << "visc is" << out.viscosities[i] << std::endl;
+             //     }
                 
               // Decide based on the maximum composition if material is yielding.
               // This avoids for example division by zero for harmonic averaging (as plastic_yielding
