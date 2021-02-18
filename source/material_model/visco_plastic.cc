@@ -157,7 +157,7 @@ namespace aspect
           // in phase_average_equation_of_state_outputs to loop over all existing phases
          
           //Jan2021 Elodie
-          std::cout << "T is" << in.temperature[i] ;
+          std::cout << "depth/T/nu is" << in.temperature[i] << std::endl;
          
           MaterialUtilities::PhaseFunctionInputs<dim> phase_inputs(in.temperature[i],
                                                                    in.pressure[i],
