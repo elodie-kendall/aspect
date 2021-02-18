@@ -156,9 +156,6 @@ namespace aspect
           // The phase index is set to invalid_unsigned_int, because it is only used internally
           // in phase_average_equation_of_state_outputs to loop over all existing phases
          
-          //Jan2021 Elodie
-          std::cout << "depth/T/nu is" << in.temperature[i] << std::endl;
-         
           MaterialUtilities::PhaseFunctionInputs<dim> phase_inputs(in.temperature[i],
                                                                    in.pressure[i],
                                                                    this->get_geometry_model().depth(in.position[i]),
@@ -233,6 +230,13 @@ namespace aspect
               // of compositional field viscosities is consistent with any averaging scheme.
               out.viscosities[i] = MaterialUtilities::average_value(volume_fractions, calculate_viscosities.first, rheology->viscosity_averaging);
 
+             //Jan2021 Elodie
+             const double depth = this->get_geometry_model().depth(in.position[i]);
+             if (in.temperature[i] < 273)
+                  {
+                     std::cout << "depth/T/nu is" << depth << in.temperature[i] << out.viscositites[i] << std::endl;
+                  }
+                
               // Decide based on the maximum composition if material is yielding.
               // This avoids for example division by zero for harmonic averaging (as plastic_yielding
               // holds values that are either 0 or 1), but might not be consistent with the viscosity
