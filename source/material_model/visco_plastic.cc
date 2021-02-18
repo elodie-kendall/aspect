@@ -234,7 +234,7 @@ namespace aspect
              const double depth = this->get_geometry_model().depth(in.position[i]);
              if (in.temperature[i] < 273)
                   {
-                     std::cout << "depth/T/nu is" << depth << in.temperature[i] << out.viscositites[i] << std::endl;
+                     std::cout << "depth/T/nu is" << depth << in.temperature[i] << out.viscosities[i] << std::endl;
                   }
                 
               // Decide based on the maximum composition if material is yielding.
