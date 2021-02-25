@@ -74,7 +74,9 @@ namespace aspect
            * each phase and then averaged for each compositional field.
            */
           double
-          compute_viscosity (const double pressure,
+          //Feb2021 Elodie add depth
+          compute_viscosity (const double depth,
+                             const double pressure,
                              const double temperature,
                              const unsigned int composition,
                              const SymmetricTensor<2,dim> &strain_rate,

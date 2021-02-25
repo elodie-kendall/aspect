@@ -40,7 +40,9 @@ namespace aspect
 
       template <int dim>
       const DislocationCreepParameters
-      DislocationCreep<dim>::compute_creep_parameters (const unsigned int composition,
+      //Feb2021 Elodie add depth
+      DislocationCreep<dim>::compute_creep_parameters (const double depth, 
+                                                       const unsigned int composition,
                                                        const std::vector<double> &phase_function_values,
                                                        const std::vector<unsigned int> &n_phases_per_composition) const
       {
@@ -74,14 +76,18 @@ namespace aspect
 
       template <int dim>
       double
-      DislocationCreep<dim>::compute_viscosity (const double strain_rate,
+      //Feb 2021 Elodie add depth
+      DislocationCreep<dim>::compute_viscosity (const double depth,
+                                                const double strain_rate,
                                                 const double pressure,
                                                 const double temperature,
                                                 const unsigned int composition,
                                                 const std::vector<double> &phase_function_values,
                                                 const std::vector<unsigned int> &n_phases_per_composition) const
       {
-        const DislocationCreepParameters p = compute_creep_parameters(composition,
+        //Feb2021 Elodie add depth
+        const DislocationCreepParameters p = compute_creep_parameters(depth,
+                                                                      composition,
                                                                       phase_function_values,
                                                                       n_phases_per_composition);
 

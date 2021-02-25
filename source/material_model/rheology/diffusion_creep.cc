@@ -41,7 +41,9 @@ namespace aspect
 
       template <int dim>
       const DiffusionCreepParameters
-      DiffusionCreep<dim>::compute_creep_parameters (const unsigned int composition,
+      //Feb2021 Elodie add depth
+      DiffusionCreep<dim>::compute_creep_parameters (const double depth,
+                                                     const unsigned int composition,
                                                      const std::vector<double> &phase_function_values,
                                                      const std::vector<unsigned int> &n_phases_per_composition) const
       {
@@ -76,13 +78,17 @@ namespace aspect
 
       template <int dim>
       double
-      DiffusionCreep<dim>::compute_viscosity (const double pressure,
+      //Feb2021 Elodie add depth
+      DiffusionCreep<dim>::compute_viscosity (const double depth,
+                                              const double pressure,
                                               const double temperature,
                                               const unsigned int composition,
                                               const std::vector<double> &phase_function_values,
                                               const std::vector<unsigned int> &n_phases_per_composition) const
       {
-        const DiffusionCreepParameters p = compute_creep_parameters(composition,
+        //Feb 2021 Elodie add depth
+        const DiffusionCreepParameters p = compute_creep_parameters(depth,
+                                                                    composition,
                                                                     phase_function_values,
                                                                     n_phases_per_composition);
 

@@ -29,7 +29,9 @@ namespace aspect
     template <int dim>
     std::vector<double>
     DiffusionDislocation<dim>::
-    calculate_isostrain_viscosities ( const std::vector<double> &volume_fractions,
+    //Feb2021 Elodie add depth
+    calculate_isostrain_viscosities ( const double depth,
+                                      const std::vector<double> &volume_fractions,
                                       const double &pressure,
                                       const double &temperature,
                                       const SymmetricTensor<2,dim> &strain_rate) const
@@ -56,10 +58,12 @@ namespace aspect
           // i corresponds to diffusion or dislocation creep
 
           // For diffusion creep, viscosity is grain size dependent
-          const Rheology::DiffusionCreepParameters diffusion_creep_parameters = diffusion_creep.compute_creep_parameters(j);
-
+          // Feb2021 Elodie add depth
+          const Rheology::DiffusionCreepParameters diffusion_creep_parameters = diffusion_creep.compute_creep_parameters(depth,j);
+         
           // For dislocation creep, viscosity is grain size independent (m=0)
-          const Rheology::DislocationCreepParameters dislocation_creep_parameters = dislocation_creep.compute_creep_parameters(j);
+          //Feb2021 Elodie add depth 
+          const Rheology::DislocationCreepParameters dislocation_creep_parameters = dislocation_creep.compute_creep_parameters(depth,j);
 
           // For diffusion creep, viscosity is grain size dependent
           const double prefactor_stress_diffusion = diffusion_creep_parameters.prefactor *
@@ -179,7 +183,9 @@ namespace aspect
           const double pressure= in.pressure[i];
           const std::vector<double> composition = in.composition[i];
           const std::vector<double> volume_fractions = MaterialUtilities::compute_volume_fractions(composition);
-
+          //Feb2021 Elodie add depth
+          const double depth = this->get_geometry_model().depth(in.position[i]);
+          
           // Averaging composition-field dependent properties
 
           // densities
@@ -204,8 +210,9 @@ namespace aspect
               // isostrain amongst all compositions, allowing calculation of the viscosity ratio.
               // TODO: This is only consistent with viscosity averaging if the arithmetic averaging
               // scheme is chosen. It would be useful to have a function to calculate isostress viscosities.
+              // Feb2021 Elodie add depth
               const std::vector<double> composition_viscosities =
-                calculate_isostrain_viscosities(volume_fractions, pressure, temperature, in.strain_rate[i]);
+                calculate_isostrain_viscosities(depth,volume_fractions, pressure, temperature, in.strain_rate[i]);
 
               // The isostrain condition implies that the viscosity averaging should be arithmetic (see above).
               // We have given the user freedom to apply alternative bounds, because in diffusion-dominated

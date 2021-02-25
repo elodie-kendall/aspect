@@ -139,7 +139,9 @@ namespace aspect
         MaterialUtilities::CompositionalAveragingOperation viscosity_averaging;
 
         std::vector<double>
-        calculate_isostrain_viscosities ( const std::vector<double> &volume_fractions,
+        //Feb2021 Elodie add depth
+        calculate_isostrain_viscosities ( const double depth,
+                                          const std::vector<double> &volume_fractions,
                                           const double &pressure,
                                           const double &temperature,
                                           const SymmetricTensor<2,dim> &strain_rate) const;

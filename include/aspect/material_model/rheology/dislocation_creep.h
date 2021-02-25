@@ -83,7 +83,9 @@ namespace aspect
            * each phase and then averaged for each compositional field.
            */
           const DislocationCreepParameters
-          compute_creep_parameters (const unsigned int composition,
+          //Feb 2021 Elodie add depth
+          compute_creep_parameters (const double depth,
+                                    const unsigned int composition,
                                     const std::vector<double> &phase_function_values = std::vector<double>(),
                                     const std::vector<unsigned int> &n_phases_per_composition = std::vector<unsigned int>()) const;
 
@@ -95,7 +97,9 @@ namespace aspect
            * each phase and then averaged for each compositional field.
            */
           double
-          compute_viscosity (const double strain_rate,
+          //Feb 2021 Elodie add depth
+          compute_viscosity (const double depth,
+                             const double strain_rate,
                              const double pressure,
                              const double temperature,
                              const unsigned int composition,

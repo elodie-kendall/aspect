@@ -68,7 +68,9 @@ namespace aspect
 
       template <int dim>
       double
-      CompositeViscoPlastic<dim>::compute_viscosity (const double pressure,
+      //Feb2021 Elodie add depth
+      CompositeViscoPlastic<dim>::compute_viscosity (const double depth, 
+                                                     const double pressure,
                                                      const double temperature,
                                                      const unsigned int composition,
                                                      const SymmetricTensor<2,dim> &strain_rate,
@@ -93,14 +95,16 @@ namespace aspect
 
         if (use_diffusion_creep)
           {
-            diffusion_creep_parameters = diffusion_creep->compute_creep_parameters(composition, phase_function_values, n_phases_per_composition);
-            eta_diff = diffusion_creep->compute_viscosity(pressure, temperature, composition, phase_function_values, n_phases_per_composition);
+            //Feb2021 Elodie add depth
+            diffusion_creep_parameters = diffusion_creep->compute_creep_parameters(depth,composition, phase_function_values, n_phases_per_composition);
+            eta_diff = diffusion_creep->compute_viscosity(depth,pressure, temperature, composition, phase_function_values, n_phases_per_composition);
           }
 
         if (use_dislocation_creep)
           {
-            dislocation_creep_parameters = dislocation_creep->compute_creep_parameters(composition, phase_function_values, n_phases_per_composition);
-            eta_disl = dislocation_creep->compute_viscosity(edot_ii, pressure, temperature, composition, phase_function_values, n_phases_per_composition);
+            //Feb 2021 Elodie add depth
+            dislocation_creep_parameters = dislocation_creep->compute_creep_parameters(depth,composition, phase_function_values, n_phases_per_composition);
+            eta_disl = dislocation_creep->compute_viscosity(depth,edot_ii, pressure, temperature, composition, phase_function_values, n_phases_per_composition);
           }
 
         if (use_peierls_creep)
