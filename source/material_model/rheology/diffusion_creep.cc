@@ -53,22 +53,34 @@ namespace aspect
             // no phases
             creep_parameters.prefactor = prefactors_diffusion[composition];
             creep_parameters.activation_energy = activation_energies_diffusion[composition];
-            creep_parameters.activation_volume = activation_volumes_diffusion[composition];
+            //Feb2021 Elodie add depth
+            //creep_parameters.activation_volume = activation_volumes_diffusion[composition]; 
+            if (depth >= 660000)
+              {
+                creep_parameters.activation_volume = activation_volumes_diffusion[composition]* std::exp(-4.63*std::pow(10,-4) * (depth/1000- 660));
+              }
+            else
+              { 
+                creep_parameters.activation_volume = activation_volumes_diffusion[composition];  
+              }
             creep_parameters.stress_exponent = stress_exponents_diffusion[composition];
             creep_parameters.grain_size_exponent = grain_size_exponents_diffusion[composition];
           }
         else
           {
-            // Average among phases
-            creep_parameters.prefactor = MaterialModel::MaterialUtilities::phase_average_value(phase_function_values, n_phases_per_composition,
+            //Feb2021 Elodie add depth
+            unsigned int switch_for_actV = 0;
+            creep_parameters.prefactor = MaterialModel::MaterialUtilities::phase_average_value(switch_for_actV,depth,phase_function_values, n_phases_per_composition,
                                          prefactors_diffusion, composition,  MaterialModel::MaterialUtilities::PhaseUtilities::logarithmic);
-            creep_parameters.activation_energy = MaterialModel::MaterialUtilities::phase_average_value(phase_function_values, n_phases_per_composition,
+            creep_parameters.activation_energy = MaterialModel::MaterialUtilities::phase_average_value(switch_for_actV,depth,phase_function_values, n_phases_per_composition,
                                                  activation_energies_diffusion, composition);
-            creep_parameters.activation_volume = MaterialModel::MaterialUtilities::phase_average_value(phase_function_values, n_phases_per_composition,
+            switch_for_actV = 1;
+            creep_parameters.activation_volume = MaterialModel::MaterialUtilities::phase_average_value(switch_for_actV,depth,phase_function_values, n_phases_per_composition,
                                                  activation_volumes_diffusion, composition);
-            creep_parameters.stress_exponent = MaterialModel::MaterialUtilities::phase_average_value(phase_function_values, n_phases_per_composition,
+            switch_for_actV = 0;
+            creep_parameters.stress_exponent = MaterialModel::MaterialUtilities::phase_average_value(switch_for_actV,depth,phase_function_values, n_phases_per_composition,
                                                stress_exponents_diffusion, composition);
-            creep_parameters.grain_size_exponent = MaterialModel::MaterialUtilities::phase_average_value(phase_function_values, n_phases_per_composition,
+            creep_parameters.grain_size_exponent = MaterialModel::MaterialUtilities::phase_average_value(switch_for_actV,depth,phase_function_values, n_phases_per_composition,
                                                    grain_size_exponents_diffusion, composition);
           }
         return creep_parameters;
