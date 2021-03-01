@@ -843,10 +843,7 @@ namespace aspect
         return averaged_parameter;
       }
 
-      //Feb 2021 Elodie add depth
-      double phase_average_value (const int switch_for_actV,
-                                  const double depth,
-                                  const std::vector<double> &phase_function_values,
+      double phase_average_value (const std::vector<double> &phase_function_values,
                                   const std::vector<unsigned int> &n_phases_per_composition,
                                   const std::vector<double> &parameter_values,
                                   const unsigned int composition,
@@ -857,16 +854,7 @@ namespace aspect
         for (unsigned int i=0; i<composition; ++i)
           base += n_phases_per_composition[i] + 1;
 
-        //double averaged_parameter = parameter_values[base];
-        //Feb2021 Elodie add depth
-        if (switch_for_actV == 1  && depth >= 660000)
-          { 
-            double averaged_parameter = parameter_values[base] * std::exp(-4.63*std::pow(10,-4) * (depth/1000- 660)); 
-          }
-        else
-          { 
-            double averaged_parameter = parameter_values[base];
-          }
+        double averaged_parameter = parameter_values[base];
  
         if (n_phases_per_composition[composition] > 0)
           {

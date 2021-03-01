@@ -75,14 +75,14 @@ namespace aspect
            */
           double
           //Feb2021 Elodie add depth
-          compute_viscosity (const double depth,
-                             const double pressure,
+          compute_viscosity (const double pressure,
                              const double temperature,
                              const unsigned int composition,
                              const SymmetricTensor<2,dim> &strain_rate,
                              std::vector<double> &partial_strain_rates,
                              const std::vector<double> &phase_function_values = std::vector<double>(),
-                             const std::vector<unsigned int> &n_phases_per_composition = std::vector<unsigned int>()) const;
+                             const std::vector<unsigned int> &n_phases_per_composition = std::vector<unsigned int>(),
+                             const double depth = 0) const;
 
           /**
             * Compute the strain rate and first stress derivative

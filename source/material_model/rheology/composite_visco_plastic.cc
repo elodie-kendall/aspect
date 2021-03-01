@@ -69,14 +69,14 @@ namespace aspect
       template <int dim>
       double
       //Feb2021 Elodie add depth
-      CompositeViscoPlastic<dim>::compute_viscosity (const double depth, 
-                                                     const double pressure,
+      CompositeViscoPlastic<dim>::compute_viscosity (const double pressure,
                                                      const double temperature,
                                                      const unsigned int composition,
                                                      const SymmetricTensor<2,dim> &strain_rate,
                                                      std::vector<double> &partial_strain_rates,
                                                      const std::vector<double> &phase_function_values,
-                                                     const std::vector<unsigned int> &n_phases_per_composition) const
+                                                     const std::vector<unsigned int> &n_phases_per_composition,
+                                                     const double depth) const
       {
         // If strain rate is zero (like during the first time step) set it to some very small number
         // to prevent a division-by-zero, and a floating point exception.
@@ -96,15 +96,15 @@ namespace aspect
         if (use_diffusion_creep)
           {
             //Feb2021 Elodie add depth
-            diffusion_creep_parameters = diffusion_creep->compute_creep_parameters(depth,composition, phase_function_values, n_phases_per_composition);
-            eta_diff = diffusion_creep->compute_viscosity(depth,pressure, temperature, composition, phase_function_values, n_phases_per_composition);
+            diffusion_creep_parameters = diffusion_creep->compute_creep_parameters(composition, phase_function_values, n_phases_per_composition,depth);
+            eta_diff = diffusion_creep->compute_viscosity(pressure, temperature, composition, phase_function_values, n_phases_per_composition,depth);
           }
 
         if (use_dislocation_creep)
           {
             //Feb 2021 Elodie add depth
-            dislocation_creep_parameters = dislocation_creep->compute_creep_parameters(depth,composition, phase_function_values, n_phases_per_composition);
-            eta_disl = dislocation_creep->compute_viscosity(depth,edot_ii, pressure, temperature, composition, phase_function_values, n_phases_per_composition);
+            dislocation_creep_parameters = dislocation_creep->compute_creep_parameters(composition, phase_function_values, n_phases_per_composition,depth);
+            eta_disl = dislocation_creep->compute_viscosity(edot_ii, pressure, temperature, composition, phase_function_values, n_phases_per_composition,depth);
           }
 
         if (use_peierls_creep)

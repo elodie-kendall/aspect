@@ -88,10 +88,10 @@ namespace aspect
            */
           const DiffusionCreepParameters
           //Feb 2021 Elodie add depth
-          compute_creep_parameters (const double depth,
-                                    const unsigned int composition,
+          compute_creep_parameters (const unsigned int composition,
                                     const std::vector<double> &phase_function_values = std::vector<double>(),
-                                    const std::vector<unsigned int> &n_phases_per_composition = std::vector<unsigned int>()) const;
+                                    const std::vector<unsigned int> &n_phases_per_composition = std::vector<unsigned int>(),
+                                    const double depth = 0) const;
 
           /**
            * Compute the viscosity based on the diffusion creep law.
@@ -102,12 +102,12 @@ namespace aspect
            */
           double
           //Feb2021 Elodie add depth
-          compute_viscosity (const double depth, 
-                             const double pressure,
+          compute_viscosity (const double pressure,
                              const double temperature,
                              const unsigned int composition,
                              const std::vector<double> &phase_function_values = std::vector<double>(),
-                             const std::vector<unsigned int> &n_phases_per_composition = std::vector<unsigned int>()) const;
+                             const std::vector<unsigned int> &n_phases_per_composition = std::vector<unsigned int>(),
+                             const double depth = 0) const;
 
           /**
             * Compute the strain rate and first stress derivative

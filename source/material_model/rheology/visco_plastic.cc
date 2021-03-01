@@ -148,15 +148,17 @@ namespace aspect
             // Step 1a: compute viscosity from diffusion creep law
             //Feb2021 Elodie add depth times 2
             const double depth = this->get_geometry_model().depth(in.position[i]);
-            const double viscosity_diffusion = diffusion_creep.compute_viscosity(depth,in.pressure[i], temperature_for_viscosity, j,
+            const double viscosity_diffusion = diffusion_creep.compute_viscosity(in.pressure[i], temperature_for_viscosity, j,
                                                                                  phase_function_values,
-                                                                                 n_phases_per_composition);
+                                                                                 n_phases_per_composition,
+                                                                                 depth);
 
             // Step 1b: compute viscosity from dislocation creep law
             // Feb2021 Elodie add depth
-            const double viscosity_dislocation = dislocation_creep.compute_viscosity(depth,edot_ii, in.pressure[i], temperature_for_viscosity, j,
+            const double viscosity_dislocation = dislocation_creep.compute_viscosity(edot_ii, in.pressure[i], temperature_for_viscosity, j,
                                                                                      phase_function_values,
-                                                                                     n_phases_per_composition);
+                                                                                     n_phases_per_composition,
+                                                                                     depth);
 
             // Step 1c: select what form of viscosity to use (diffusion, dislocation, fk, or composite)
             double viscosity_pre_yield = 0.0;

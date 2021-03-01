@@ -41,12 +41,21 @@ namespace aspect
       template <int dim>
       const DislocationCreepParameters
       //Feb2021 Elodie add depth
-      DislocationCreep<dim>::compute_creep_parameters (const double depth, 
-                                                       const unsigned int composition,
+      DislocationCreep<dim>::compute_creep_parameters (const unsigned int composition,
                                                        const std::vector<double> &phase_function_values,
-                                                       const std::vector<unsigned int> &n_phases_per_composition) const
+                                                       const std::vector<unsigned int> &n_phases_per_composition,
+                                                       const double depth) const
       {
         DislocationCreepParameters creep_parameters;
+        if (depth >= 660000)
+          {
+            const double factor = std::exp(-4.63*std::pow(10,-4) * (depth/1000- 660));
+          }
+        else
+          {
+            const double factor = 1;
+          }
+        
         if (phase_function_values == std::vector<double>())
           {
             // no phases
@@ -54,30 +63,20 @@ namespace aspect
             creep_parameters.activation_energy = activation_energies_dislocation[composition];
             //Feb2021 Elodie add depth
             //creep_parameters.activation_volume = activation_volumes_dislocation[composition];
-            if (depth >= 660000)
-              {
-                creep_parameters.activation_volume = activation_volumes_diffusion[composition]* std::exp(-4.63*std::pow(10,-4) * (depth/1000- 660));
-              }
-            else
-              {
-                creep_parameters.activation_volume = activation_volumes_diffusion[composition];
-              }
+            creep_parameters.activation_volume = activation_volumes_diffusion[composition]*factor;
             creep_parameters.stress_exponent = stress_exponents_dislocation[composition];
           }
         else
           {
             // Average among phases
-            unsigned int switch_for_actV = 0;
-            creep_parameters.prefactor = MaterialModel::MaterialUtilities::phase_average_value(switch_for_actV,depth,phase_function_values, n_phases_per_composition,
-                                         prefactors_dislocation, composition,
-                                         MaterialModel::MaterialUtilities::PhaseUtilities::logarithmic);
-            creep_parameters.activation_energy = MaterialModel::MaterialUtilities::phase_average_value(switch_for_actV,depth,phase_function_values, n_phases_per_composition,
+            creep_parameters.prefactor = MaterialModel::MaterialUtilities::phase_average_value(phase_function_values, n_phases_per_composition,
+                                         prefactors_dislocation, composition, MaterialModel::MaterialUtilities::PhaseUtilities::logarithmic);
+            creep_parameters.activation_energy = MaterialModel::MaterialUtilities::phase_average_value(phase_function_values, n_phases_per_composition,
                                                  activation_energies_dislocation, composition);
-            switch_for_actV = 1;
-            creep_parameters.activation_volume = MaterialModel::MaterialUtilities::phase_average_value(switch_for_actV,depth,phase_function_values, n_phases_per_composition,
-                                                 activation_volumes_dislocation , composition);
-            switch_for_actV = 0;
-            creep_parameters.stress_exponent = MaterialModel::MaterialUtilities::phase_average_value(switch_for_actV,depth,phase_function_values, n_phases_per_composition,
+            //Feb 2021 Elodie add depth
+            creep_parameters.activation_volume = MaterialModel::MaterialUtilities::phase_average_value(phase_function_values, n_phases_per_composition,
+                                                 activation_volumes_dislocation*factor, composition);
+            creep_parameters.stress_exponent = MaterialModel::MaterialUtilities::phase_average_value(phase_function_values, n_phases_per_composition,
                                                stress_exponents_dislocation, composition);
           }
 
@@ -89,19 +88,19 @@ namespace aspect
       template <int dim>
       double
       //Feb 2021 Elodie add depth
-      DislocationCreep<dim>::compute_viscosity (const double depth,
-                                                const double strain_rate,
+      DislocationCreep<dim>::compute_viscosity (const double strain_rate,
                                                 const double pressure,
                                                 const double temperature,
                                                 const unsigned int composition,
                                                 const std::vector<double> &phase_function_values,
-                                                const std::vector<unsigned int> &n_phases_per_composition) const
+                                                const std::vector<unsigned int> &n_phases_per_composition,
+                                                const double depth) const
       {
         //Feb2021 Elodie add depth
-        const DislocationCreepParameters p = compute_creep_parameters(depth,
-                                                                      composition,
+        const DislocationCreepParameters p = compute_creep_parameters(composition,
                                                                       phase_function_values,
-                                                                      n_phases_per_composition);
+                                                                      n_phases_per_composition,
+                                                                      depth);
 
         // Power law creep equation:
         //    viscosity = 0.5 * A^(-1/n) * edot_ii^((1-n)/n) * exp((E + P*V)/(nRT))
