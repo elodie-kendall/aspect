@@ -48,16 +48,16 @@ namespace aspect
                                                      const double depth) const
       {
         DiffusionCreepParameters creep_parameters;
-        if (depth >= 660000)
+         
+        //Feb2021 Elodie compute factor
+        const double factor = 1.;
+        unsigned int i = 0;
+
+        if (depth >= 660000.)
           {
             const double factor = std::exp(-4.63*std::pow(10,-4) * (depth/1000- 660));
           }
-        else
-          {
-            const double factor = 1;
-          }
         
-
         if (phase_function_values == std::vector<double>())
           {
             // no phases
@@ -77,8 +77,11 @@ namespace aspect
             creep_parameters.activation_energy = MaterialModel::MaterialUtilities::phase_average_value(phase_function_values, n_phases_per_composition,
                                                  activation_energies_diffusion, composition);
             //Feb 2021 Elodie add depth
+            for (i=0;i<activation_volumes_diffusion.size();++i)
+              activation_volumes_diffusion[i] = activation_volumes_diffusion[i]*factor;
+
             creep_parameters.activation_volume = MaterialModel::MaterialUtilities::phase_average_value(phase_function_values, n_phases_per_composition,
-                                                 activation_volumes_diffusion*factor, composition);
+                                                 activation_volumes_diffusion, composition);
             creep_parameters.stress_exponent = MaterialModel::MaterialUtilities::phase_average_value(phase_function_values, n_phases_per_composition,
                                                stress_exponents_diffusion, composition);
             creep_parameters.grain_size_exponent = MaterialModel::MaterialUtilities::phase_average_value(phase_function_values, n_phases_per_composition,

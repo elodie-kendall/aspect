@@ -47,13 +47,13 @@ namespace aspect
                                                        const double depth) const
       {
         DislocationCreepParameters creep_parameters;
-        if (depth >= 660000)
+        //Feb2021 Elodie compute factor
+         const double factor = 1.;
+         unsigned int i = 0;
+    
+        if (depth >= 660000.)
           {
             const double factor = std::exp(-4.63*std::pow(10,-4) * (depth/1000- 660));
-          }
-        else
-          {
-            const double factor = 1;
           }
         
         if (phase_function_values == std::vector<double>())
@@ -63,7 +63,7 @@ namespace aspect
             creep_parameters.activation_energy = activation_energies_dislocation[composition];
             //Feb2021 Elodie add depth
             //creep_parameters.activation_volume = activation_volumes_dislocation[composition];
-            creep_parameters.activation_volume = activation_volumes_diffusion[composition]*factor;
+            creep_parameters.activation_volume = activation_volumes_dislocation[composition]*factor;
             creep_parameters.stress_exponent = stress_exponents_dislocation[composition];
           }
         else
@@ -74,8 +74,11 @@ namespace aspect
             creep_parameters.activation_energy = MaterialModel::MaterialUtilities::phase_average_value(phase_function_values, n_phases_per_composition,
                                                  activation_energies_dislocation, composition);
             //Feb 2021 Elodie add depth
+            for (i=0;i<activation_volumes_dislocation.size();++i)
+              activation_volumes_dislocation[i] = activation_volumes_dislocation[i]*factor;           
+
             creep_parameters.activation_volume = MaterialModel::MaterialUtilities::phase_average_value(phase_function_values, n_phases_per_composition,
-                                                 activation_volumes_dislocation*factor, composition);
+                                                 activation_volumes_dislocation, composition);
             creep_parameters.stress_exponent = MaterialModel::MaterialUtilities::phase_average_value(phase_function_values, n_phases_per_composition,
                                                stress_exponents_dislocation, composition);
           }
