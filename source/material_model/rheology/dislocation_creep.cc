@@ -74,11 +74,12 @@ namespace aspect
             creep_parameters.activation_energy = MaterialModel::MaterialUtilities::phase_average_value(phase_function_values, n_phases_per_composition,
                                                  activation_energies_dislocation, composition);
             //Feb 2021 Elodie add depth
-            for (i=0;i<activation_volumes_dislocation.size();++i)
-              activation_volumes_dislocation[i] = activation_volumes_dislocation[i]*factor;           
+            std::vector<double> activation_volumes_dislocation_depthdep = activation_volumes_dislocation;
+            for (i=0;i<activation_volumes_dislocation_depthdep.size();++i)
+              activation_volumes_dislocation_depthdep[i] = activation_volumes_dislocation_depthdep[i]*factor;           
 
             creep_parameters.activation_volume = MaterialModel::MaterialUtilities::phase_average_value(phase_function_values, n_phases_per_composition,
-                                                 activation_volumes_dislocation, composition);
+                                                 activation_volumes_dislocation_depthdep, composition);
             creep_parameters.stress_exponent = MaterialModel::MaterialUtilities::phase_average_value(phase_function_values, n_phases_per_composition,
                                                stress_exponents_dislocation, composition);
           }
