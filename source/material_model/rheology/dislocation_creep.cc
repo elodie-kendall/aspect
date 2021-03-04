@@ -48,12 +48,12 @@ namespace aspect
       {
         DislocationCreepParameters creep_parameters;
         //Feb2021 Elodie compute factor
-         const double factor = 1.;
+         double factor = 1.;
          unsigned int i = 0;
     
         if (depth >= 660000.)
           {
-            const double factor = std::exp(-4.63*std::pow(10,-4) * (depth/1000- 660));
+            factor = std::exp(-9*std::pow(10,-5) * (depth/1000- 660));
           }
         
         if (phase_function_values == std::vector<double>())
