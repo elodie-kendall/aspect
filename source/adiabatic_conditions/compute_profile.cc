@@ -124,7 +124,7 @@ namespace aspect
               temperatures[i] = (this->include_adiabatic_heating())
                                 ?
                                 //temperatures[i-1] * (1 + alpha * gravity * delta_z * one_over_cp)
-                                temperatures[i-1] * (1 + (3.8e-5*exp((-4.6e-4)*(z/1000))) * gravity * delta_z * one_over_cp)
+                                temperatures[i-1] * (1 + (3.e-5*exp((-4.15e-4)*(z/1000))) * gravity * delta_z * one_over_cp)
 
                                 :
                                 temperatures[0];
