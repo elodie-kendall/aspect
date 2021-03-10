@@ -54,7 +54,7 @@ namespace aspect
         unsigned int i = 0;
         if (depth >= 660000.)
           {
-            factor = std::exp(-1.06*std::pow(10,-4) * (depth/1000- 660));
+            factor = std::exp(-1.459*std::pow(10,-4) * (depth/1000- 660));
           }
         
         if (phase_function_values == std::vector<double>())
