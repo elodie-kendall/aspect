@@ -297,9 +297,10 @@ namespace aspect
       prm.leave_subsection ();
 
       // Check that a boundary temperature is prescribed
-      AssertThrow (this->has_boundary_temperature(),
-                   ExcMessage ("This initial condition can only be used if a boundary "
-                               "temperature is prescribed."));
+      //Elodie March 2021
+      //AssertThrow (this->has_boundary_temperature(),
+      //             ExcMessage ("This initial condition can only be used if a boundary "
+      //                         "temperature is prescribed."));
 
       // This initial condition only makes sense if the geometry is derived from
       // a spherical model
