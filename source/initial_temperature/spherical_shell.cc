@@ -64,9 +64,10 @@ namespace aspect
                            0.2 * s * (1-s) * std::sin(angular_mode*phi +(90 + 2*rotation_offset)*numbers::PI/180 ) * scale;
 
       // Check that a boundary temperature is prescribed
-      AssertThrow (this->has_boundary_temperature(),
-                   ExcMessage ("This initial condition can only be used if a boundary "
-                               "temperature is prescribed."));
+      //Elodie Mar2021
+      ////AssertThrow (this->has_boundary_temperature(),
+      //             ExcMessage ("This initial condition can only be used if a boundary "
+      //                         "temperature is prescribed."));
 
       return (this->get_boundary_temperature_manager().maximal_temperature()*(s_mod)
               +
